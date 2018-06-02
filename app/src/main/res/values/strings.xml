@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Easy Parking</string>
+    <string name="hint_phone_number">So dien thoai</string>
+    <string name="error_phone_number">So dien thoai khong hop le</string>
+    <string name="button_login">Dang nhap</string>
+    <string name="title_activity_maps">Map</string>
+</resources>
