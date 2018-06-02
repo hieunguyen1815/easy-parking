@@ -1,5 +1,7 @@
 package app.android.easygroup.easyparking.fragments;
 
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,11 +15,18 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+
 import app.android.easygroup.easyparking.NavigationHost;
 import app.android.easygroup.easyparking.R;
+import app.android.easygroup.easyparking.domain.parkinglot.ParkingLot;
+import app.android.easygroup.easyparking.services.internal.parkinglot.ParkingLotService;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -60,8 +69,52 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
+        LatLng sydney = new LatLng(10.768277, 106.6954475);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        CameraPosition cameraOpt = new CameraPosition.Builder()
+                .target(sydney)
+                .zoom(16.5f)
+                .build();
+
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraOpt));
+
+        CircleOptions circleOpt = new CircleOptions()
+                .center(sydney)
+                .radius(500)
+                .strokeWidth(1)
+                .strokeColor(Color.parseColor("#03A9F4"))
+                .fillColor(Color.parseColor("#3303A9F4"));
+        mMap.addCircle(circleOpt);
+
+        new FetchParkingLotsInRadius().execute(sydney);
+    }
+
+    public class FetchParkingLotsInRadius extends AsyncTask<LatLng, Void, ParkingLot[]> {
+
+        @Override
+        protected ParkingLot[] doInBackground(LatLng... latLngs) {
+            try {
+                return ParkingLotService.getInstance().getParkingLotsInRadius(latLngs[0].latitude, latLngs[0].longitude);
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ParkingLot[] parkingLots) {
+            if (parkingLots != null) {
+                mMap.clear();
+
+                for (ParkingLot parkingLot : parkingLots) {
+                    MarkerOptions markerOpt = new MarkerOptions()
+                            .position(parkingLot.getLatLng());
+                    mMap.addMarker(markerOpt);
+                }
+
+
+            }
+        }
     }
 }

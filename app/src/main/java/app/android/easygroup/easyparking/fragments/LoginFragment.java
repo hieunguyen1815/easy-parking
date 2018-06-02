@@ -67,7 +67,7 @@ public class LoginFragment extends Fragment {
         @Override
         protected User doInBackground(String... phoneNumbers) {
             try {
-                UserService.getInstance().login(phoneNumbers[0]);
+                return UserService.getInstance().login(phoneNumbers[0]);
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 e.printStackTrace();
             }

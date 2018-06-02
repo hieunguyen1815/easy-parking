@@ -17,7 +17,6 @@ import java.util.concurrent.TimeoutException;
 
 import app.android.easygroup.easyparking.NavigationHost;
 import app.android.easygroup.easyparking.R;
-import app.android.easygroup.easyparking.activities.AuthActivity;
 import app.android.easygroup.easyparking.activities.MainActivity;
 import app.android.easygroup.easyparking.domain.user.User;
 import app.android.easygroup.easyparking.services.internal.user.UserService;
@@ -113,7 +112,7 @@ public class VerifyFragment extends Fragment {
         @Override
         protected User doInBackground(String... codes) {
             try {
-                UserService.getInstance().verify(userId, codes[0]);
+                return UserService.getInstance().verify(userId, codes[0]);
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 e.printStackTrace();
             }

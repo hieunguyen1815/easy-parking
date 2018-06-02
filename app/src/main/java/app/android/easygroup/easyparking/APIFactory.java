@@ -2,7 +2,7 @@ package app.android.easygroup.easyparking;
 
 public class APIFactory {
 
-    private static final String HOST = "http://18.216.227.22";
+    private static final String HOST = "https://dev.easyparking.com.vn";
 
     public static String api(API api) {
         return HOST + api.getValue();
@@ -10,7 +10,8 @@ public class APIFactory {
 
     public enum API {
         LOGIN("/auth/local/register"),
-        VERIFY("/api/users/%s/verify/sms");
+        VERIFY("/api/users/%s/verify/sms"),
+        GET_PARKING_LOTS_IN_RADIUS("/api/parkinglots");
 
         private String value;
 
