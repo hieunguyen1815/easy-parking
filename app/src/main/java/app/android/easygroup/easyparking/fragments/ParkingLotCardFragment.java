@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.button.MaterialButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +43,8 @@ public class ParkingLotCardFragment extends Fragment {
         final TextView feeTextView = view.findViewById(R.id.fee_value_text_view);
         final TextView distanceTextView = view.findViewById(R.id.distance_value_text_view);
 
-        final MaterialButton loginButton = view.findViewById(R.id.info_button);
+        final MaterialButton infoButton = view.findViewById(R.id.info_button);
+        final MaterialButton bookingButton = view.findViewById(R.id.booking_button);
 
         if (parkingLot != null) {
             nameTextView.setText(parkingLot.name);
@@ -49,14 +52,34 @@ public class ParkingLotCardFragment extends Fragment {
             hourTextView.setText(parkingLot.getOperationTime());
             feeTextView.setText(parkingLot.getDisplayPrice());
 
-            loginButton.setOnClickListener(new View.OnClickListener() {
+            infoButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     ((NavigationHost) getActivity()).navigateTo(ParkingLotDetailsFragment.getInstance(parkingLot), true);
                 }
             });
+
+            bookingButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showDialog(parkingLot);
+                }
+            });
         }
 
         return view;
+    }
+
+    public void showDialog(ParkingLot parkingLot) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        ReservationDialogFragment fragment = ReservationDialogFragment.getInstance(parkingLot);
+        fragment.show(fragmentManager, "reservation");
+        /*// The device is smaller, so show the fragment fullscreen
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        // For a little polish, specify a transition animation
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        // To make it fullscreen, use the 'content' root view as the container
+        // for the fragment, which is always the root view for the activity
+        transaction.add(android.R.id.content, ).addToBackStack(null).commit();*/
     }
 }

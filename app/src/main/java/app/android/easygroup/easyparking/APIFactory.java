@@ -11,7 +11,8 @@ public class APIFactory {
     public enum API {
         LOGIN("/auth/local/register"),
         VERIFY("/api/users/%s/verify/sms"),
-        GET_PARKING_LOTS_IN_RADIUS("/api/parkinglots");
+        GET_PARKING_LOTS_IN_RADIUS("/api/parkinglots"),
+        RESERVE_PARKING_LOT("/api/parkinglots/%s/book");
 
         private String value;
 

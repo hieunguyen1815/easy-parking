@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 import app.android.easygroup.easyparking.NavigationHost;
 import app.android.easygroup.easyparking.R;
+import app.android.easygroup.easyparking.activities.MainActivity;
+import app.android.easygroup.easyparking.services.internal.user.UserService;
 
 public class WelcomeFragment extends Fragment {
 
@@ -32,7 +34,11 @@ public class WelcomeFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            ((NavigationHost) getActivity()).navigateTo(new LoginFragment(), false);
+            if (UserService.getInstance().isLogingin()) {
+                ((NavigationHost) getActivity()).navigateTo(new LoginFragment(), false);
+            } else {
+                ((NavigationHost) getActivity()).navigateTo(MainActivity.class, null, false);
+            }
         }
     }
 }

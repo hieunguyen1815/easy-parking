@@ -4,6 +4,8 @@ public class User {
 
     public String id;
 
+    public String accessToken;
+
     public String givenName;
 
     public String familyName;
