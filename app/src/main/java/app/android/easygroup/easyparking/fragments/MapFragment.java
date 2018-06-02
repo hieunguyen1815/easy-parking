@@ -18,6 +18,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.concurrent.ExecutionException;
@@ -28,10 +29,12 @@ import app.android.easygroup.easyparking.R;
 import app.android.easygroup.easyparking.domain.parkinglot.ParkingLot;
 import app.android.easygroup.easyparking.services.internal.parkinglot.ParkingLotService;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private SupportMapFragment mapFragment;
     private GoogleMap mMap;
+
+    private ParkingLot[] parkingLots;
 
     @Nullable
     @Override
@@ -43,14 +46,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mapFragment.getMapAsync(this);
         }
         getChildFragmentManager().beginTransaction().replace(R.id.map, mapFragment).commit();
-
-        MaterialButton loginButton = view.findViewById(R.id.info_button);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((NavigationHost) getActivity()).navigateTo(new ParkingLotDetailsFragment(), true);
-            }
-        });
 
         return view;
     }
@@ -76,7 +71,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 .target(sydney)
                 .zoom(16.5f)
                 .build();
-
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraOpt));
 
         CircleOptions circleOpt = new CircleOptions()
@@ -87,10 +81,33 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 .fillColor(Color.parseColor("#3303A9F4"));
         mMap.addCircle(circleOpt);
 
-        new FetchParkingLotsInRadius().execute(sydney);
+        mMap.setOnMarkerClickListener(this);
+
+        new FetchParkingLotsInRadius(this).execute(sydney);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        LatLng latLng = marker.getPosition();
+        for (ParkingLot parkingLot : parkingLots) {
+            if (parkingLot.latitude == latLng.latitude && parkingLot.longitude == latLng.longitude) {
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.parking_lot_card_container, ParkingLotCardFragment.getInstance(parkingLot))
+                        .commit();
+                break;
+            }
+        }
+        return false;
     }
 
     public class FetchParkingLotsInRadius extends AsyncTask<LatLng, Void, ParkingLot[]> {
+
+        private MapFragment self;
+
+        public FetchParkingLotsInRadius(MapFragment self) {
+            this.self = self;
+        }
 
         @Override
         protected ParkingLot[] doInBackground(LatLng... latLngs) {
@@ -106,14 +123,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         protected void onPostExecute(ParkingLot[] parkingLots) {
             if (parkingLots != null) {
                 mMap.clear();
+                self.parkingLots = parkingLots;
 
                 for (ParkingLot parkingLot : parkingLots) {
                     MarkerOptions markerOpt = new MarkerOptions()
                             .position(parkingLot.getLatLng());
                     mMap.addMarker(markerOpt);
                 }
-
-
             }
         }
     }

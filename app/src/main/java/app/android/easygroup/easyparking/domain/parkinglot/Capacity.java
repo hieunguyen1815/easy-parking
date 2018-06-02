@@ -1,6 +1,8 @@
 package app.android.easygroup.easyparking.domain.parkinglot;
 
-public class Capacity {
+import java.io.Serializable;
+
+public class Capacity implements Serializable {
 
     public String id;
 

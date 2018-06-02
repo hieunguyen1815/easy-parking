@@ -52,14 +52,23 @@
             app:layout_constraintStart_toStartOf="@+id/from_location_edit_text"
             app:layout_constraintTop_toBottomOf="@+id/from_location_edit_text" />
 
-        <include
-            layout="@layout/parking_lot_card"
+        <FrameLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/main_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".activities.MainActivity" />
+
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:id="@+id/parking_lot_card_container"
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/map"
             app:layout_constraintEnd_toEndOf="@+id/dest_location_edit_text"
-            app:layout_constraintStart_toStartOf="@+id/dest_location_edit_text" />
+            app:layout_constraintStart_toStartOf="@+id/dest_location_edit_text"
+            tools:context=".fragments.MapFragment"/>
 
     </android.support.constraint.ConstraintLayout>
 

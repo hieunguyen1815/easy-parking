@@ -1,6 +1,8 @@
 package app.android.easygroup.easyparking.domain.parkinglot;
 
-public class Address {
+import java.io.Serializable;
+
+public class Address implements Serializable {
 
     public String id;
 
@@ -8,7 +10,7 @@ public class Address {
 
     public String city;
 
-    public String distrcit;
+    public String district;
 
     public String ward;
 
@@ -17,4 +19,40 @@ public class Address {
     public String number;
 
     public Address() { }
+
+    public String getFullAddress() {
+        return number +
+                " " +
+                street +
+                ", " +
+                ward +
+                ", " +
+                district +
+                ", " +
+                city +
+                ", " +
+                country;
+    }
+
+    public String getNormalAddress() {
+        return number +
+                " " +
+                street +
+                ", " +
+                ward +
+                ", " +
+                district +
+                ", " +
+                city;
+    }
+
+    public String getShortAddress() {
+        return number +
+                " " +
+                street +
+                ", " +
+                ward +
+                ", " +
+                district;
+    }
 }

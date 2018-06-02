@@ -2,7 +2,9 @@ package app.android.easygroup.easyparking.domain.parkinglot;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class ParkingLot {
+import java.io.Serializable;
+
+public class ParkingLot implements Serializable {
 
     public String id;
 
@@ -32,5 +34,16 @@ public class ParkingLot {
 
     public LatLng getLatLng() {
         return new LatLng(latitude, longitude);
+    }
+
+    public String getOperationTime() {
+        return openingTime + " - " + closingTime;
+    }
+
+    public String getDisplayPrice() {
+        if (prices != null && prices.length > 0) {
+            return String.valueOf(prices[0].amount);
+        }
+        return "0.00";
     }
 }
