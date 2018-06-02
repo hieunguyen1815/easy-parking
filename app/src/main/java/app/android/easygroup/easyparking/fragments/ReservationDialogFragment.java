@@ -11,8 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+
 import app.android.easygroup.easyparking.R;
 import app.android.easygroup.easyparking.domain.parkinglot.ParkingLot;
+import app.android.easygroup.easyparking.domain.ticket.Ticket;
+import app.android.easygroup.easyparking.services.internal.ticket.ReservationService;
 
 public class ReservationDialogFragment extends DialogFragment {
 
@@ -34,7 +39,7 @@ public class ReservationDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_dialog_reservation, container, false);
 
         ParkingLot parkingLot = (ParkingLot) getArguments().getSerializable(PARKING_LOT_KEY);
-
+        new ReserveParkingLotTask(this, parkingLot).execute("23H24221");
         return view;
     }
 
@@ -46,16 +51,33 @@ public class ReservationDialogFragment extends DialogFragment {
         return dialog;
     }
 
-    public class ReserveParkingLotTask extends AsyncTask<String, Void, String> {
+    public class ReserveParkingLotTask extends AsyncTask<String, Void, Ticket> {
+
+        private ReservationDialogFragment self;
+
+        private ParkingLot parkingLot;
+
+        public ReserveParkingLotTask(ReservationDialogFragment self, ParkingLot parkingLot) {
+            this.self = self;
+            this.parkingLot = parkingLot;
+        }
 
         @Override
-        protected String doInBackground(String... plates) {
+        protected Ticket doInBackground(String... plates) {
+            try {
+                return ReservationService.getInstance().reserveParkingLot(parkingLot, plates[0]);
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+        protected void onPostExecute(Ticket ticket) {
+            if (ticket != null) {
+                int x = 0;
+                self.dismiss();
+            }
         }
     }
 }

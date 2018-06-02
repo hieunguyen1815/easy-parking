@@ -29,17 +29,20 @@ public class ReservationService {
         Gson gson = new Gson();
         String res = HttpClient.getInstance().post(
                 APIFactory.api(APIFactory.API.RESERVE_PARKING_LOT),
-                new String[] {parkingLot.id},
+                new String[] {"5a9b939dfc0e5eb20bd188eb"},
                 ImmutableMap.of(
                         "vehicleType", "car",
                         "unit", "hour",
                         "paymentMethod", "CASH",
-                        "estimatedArrivalTime", "15",
                         "numberPlate", numberPlate
                 ),
-                ImmutableMap.of("Authorization", UserService.getInstance().getAccessToken()));
+                ImmutableMap.of("Authorization", "Bearer " + UserService.getInstance().getAccessToken()));
 
         Ticket ticket = gson.fromJson(res, Ticket.class);
         return ticket;
+    }
+
+    public boolean cancelReservation(String ticketId) {
+        return false;
     }
 }
