@@ -35,9 +35,9 @@ public class WelcomeFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             if (UserService.getInstance().isLogingin()) {
-                ((NavigationHost) getActivity()).navigateTo(new LoginFragment(), false);
-            } else {
                 ((NavigationHost) getActivity()).navigateTo(MainActivity.class, null, false);
+            } else {
+                ((NavigationHost) getActivity()).navigateTo(new LoginFragment(), false);
             }
         }
     }
