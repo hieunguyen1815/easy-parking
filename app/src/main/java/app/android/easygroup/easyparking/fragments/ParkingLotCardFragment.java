@@ -31,7 +31,7 @@ public class ParkingLotCardFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.parking_lot_card, container, false);
+        View view = inflater.inflate(R.layout.fragment_parking_lot_card, container, false);
 
         final ParkingLot parkingLot = (ParkingLot) getArguments().getSerializable(PARKING_LOT_KEY);
 
