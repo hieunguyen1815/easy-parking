@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -85,7 +86,7 @@ public class ReservationDialogFragment extends DialogFragment {
 
         parkingLotRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         parkingLotRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        parkingLotRecyclerView.setAdapter(new PricesAdapter());
+        parkingLotRecyclerView.setAdapter(new PricesAdapter(Arrays.asList(parkingLot.prices)));
 
         plateEditText.setOnKeyListener(new View.OnKeyListener() {
             @Override

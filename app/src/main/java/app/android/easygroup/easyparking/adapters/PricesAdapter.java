@@ -18,8 +18,8 @@ public class PricesAdapter extends RecyclerView.Adapter<PricesAdapter.ViewHolder
 
     private List<Price> prices;
 
-    public PricesAdapter() {
-        this.prices = new ArrayList<>();
+    public PricesAdapter(List<Price> prices) {
+        this.prices = prices == null ? new ArrayList<Price>() : prices;
     }
 
     @NonNull

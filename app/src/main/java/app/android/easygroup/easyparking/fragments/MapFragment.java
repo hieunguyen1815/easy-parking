@@ -64,7 +64,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng startPosition = new LatLng(10.768277, 106.6954475);
+        LatLng startPosition = new LatLng(10.777057, 106.699512);
 
         CameraPosition cameraOpt = new CameraPosition.Builder()
                 .target(startPosition)
