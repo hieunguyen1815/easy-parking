@@ -4,4 +4,5 @@
     <string name="error_phone_number">So dien thoai khong hop le</string>
     <string name="button_login">Dang nhap</string>
     <string name="title_activity_maps">Map</string>
+    <string name="error_number_plate">Biển số xe không hợp lệ</string>
 </resources>

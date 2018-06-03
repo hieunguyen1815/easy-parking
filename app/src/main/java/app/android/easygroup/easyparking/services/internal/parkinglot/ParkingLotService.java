@@ -12,7 +12,7 @@ import app.android.easygroup.easyparking.domain.parkinglot.ParkingLot;
 
 public class ParkingLotService {
 
-    private static final int DEFAULT_RADIUS = 1000;
+    private static final int DEFAULT_RADIUS = 500;
 
     private static ParkingLotService instance;
 

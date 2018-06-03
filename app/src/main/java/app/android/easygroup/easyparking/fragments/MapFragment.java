@@ -64,26 +64,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(10.768277, 106.6954475);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        LatLng startPosition = new LatLng(10.768277, 106.6954475);
 
         CameraPosition cameraOpt = new CameraPosition.Builder()
-                .target(sydney)
+                .target(startPosition)
                 .zoom(16.5f)
                 .build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraOpt));
 
-        CircleOptions circleOpt = new CircleOptions()
-                .center(sydney)
-                .radius(500)
-                .strokeWidth(1)
-                .strokeColor(Color.parseColor("#03A9F4"))
-                .fillColor(Color.parseColor("#3303A9F4"));
-        mMap.addCircle(circleOpt);
-
         mMap.setOnMarkerClickListener(this);
 
-        new FetchParkingLotsInRadius(this).execute(sydney);
+        new FetchParkingLotsInRadius(this).execute(startPosition);
     }
 
     @Override
@@ -130,6 +121,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                             .position(parkingLot.getLatLng());
                     mMap.addMarker(markerOpt);
                 }
+
+                CircleOptions circleOpt = new CircleOptions()
+                        .center(new LatLng(10.768277, 106.6954475))
+                        .radius(500)
+                        .strokeWidth(1)
+                        .strokeColor(Color.parseColor("#03A9F4"))
+                        .fillColor(Color.parseColor("#3303A9F4"));
+                mMap.addCircle(circleOpt);
             }
         }
     }
